@@ -12,13 +12,54 @@
     <body> 
 
         <div class="header">
-            <h1>Example Student's Assignment 1!</h1>
+            <h1>Assignment 1: Blink!</h1>
+            <h2>Schematic</h2>
+            <img src="A1/Schematic.jpg" width=400></a>
             <p>
-            <img src="red-panda.jpg" width=400></a>
+                The schematic demonstrates how I accomplish making three LED blink sequentially. First, Connect<br> each LED to a separate Pin on Arduino. Second, add resistors to the circuit to drop the voltage on<br> 
+                each LED to prevent LEDs from breaking. Finally, Connect the LEDs back to GND on Arduino.
             </p>
+            <h2>Circuit</h2>
+            <img src="A1/Circuit.jpg" width=400></a>
             <p>
-            Here is all the documentation for assignment 1!
+                In this assignment, I used blue, red, and white LEDs along with 220K resistors. The resistance of each LED is around 100 ohms. If only using the LED without any resistor, I would destroy the LED because the current flowing throught LED would be 5V/100 ohms = 0.05A which would not be good to the LED. If I used 220K resistors, the current flows through each LED would be around 5V/(100 + 220) ohms = 0.015A which is in the desired current range. 
             </p>
+            <h2>Firmware</h2>
+            <xmp>
+            void setup() {
+                // put your setup code here, to run once:
+                pinMode(12, OUTPUT);   // Connect Pin 12 to LED
+                pinMode(11, OUTPUT);   // Connect Pin 11 to LED
+                pinMode(10, OUTPUT);   // Connect Pin 10 to LED
+            }
+
+            void loop() {
+              // put your main code here, to run repeatedly:
+              digitalWrite(12, HIGH);  // turn the LED on by making the voltage high
+              delay(200);              // wait for 1/5 second
+              digitalWrite(12, LOW);   // turn the LED on by making the voltage low
+              delay(200);              // wait for 1/5 second
+              
+              digitalWrite(11, HIGH);  // turn the LED on by making the voltage high
+              delay(200);              // wait for 1/5 second
+              digitalWrite(11, LOW);   // turn the LED on by making the voltage low
+              delay(200);              // wait for 1/5 second
+
+              digitalWrite(10, HIGH);  // turn the LED on by making the voltage high
+              delay(200);              // wait for 1/5 second
+              digitalWrite(10, LOW);   // turn the LED on by making the voltage low
+              delay(200);              // wait for 1/5 second
+            }
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="A1/Video1.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 Each LED is blinking independently. By setting the delay time for switching on/off LED,<br>
+                 LEDs blink sequentially. Every LED will blink 1/5 second in a loop.
+                 <br>
+                 <br>
+            </p>
+
         </div>
         
     </body>
