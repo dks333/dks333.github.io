@@ -12,13 +12,69 @@
     <body> 
 
         <div class="header">
-            <h1>Example Student's Assignment 2!</h1>
+            <h1>Assignment 2: Fade</h1>
+            <h2>Schematic</h2>
+            <img src="A2/Schematic.jpg" width=400></a>
             <p>
-            <img src="red-panda.jpg" width=400></a>
+                The schematic demonstrates how I accomplish making three LED fades. First, connect LED and button to a separate Pin on Arduino. Second, connect the button to 5V. Third, add resistors to the circuit to drop the voltage on LED and button to prevent LED and button from breaking. Finally, Connect the LED and Button back to GND on Arduino.
             </p>
+            <h2>Circuit</h2>
+            <img src="A2/Circuit.jpg" width=400></a>
             <p>
-            Here is all the documentation for assignment 2!
+                In this assignment, I used blue LED with 220K resistor and a button with 10K resistor. The voltage drop of each LED is around 1.6 ohms. The current flows through the LED would be around (5V - 1.6V) / A x 220K ohms which is 0.015mA. This is in the desired current range. For the button, the reason why I use a 10K resistor is to make sure when the button is not pressed, the voltage across the button is not zero and it's not breaking anything.
             </p>
+            <h2>Firmware</h2>
+            <xmp>
+            
+// constants won't change. They're used here to set pin numbers:
+const int buttonPin = 2;     // the number of the pushbutton pin
+const int ledPin =  11;      // the number of the LED pin
+
+// variables will change
+int buttonState = 0; // variable for reading the pushbutton status
+
+void setup() {
+  // initialize the LED pin as an output:
+  pinMode(ledPin, OUTPUT);
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
+}
+
+void loop() {
+  
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+
+  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {
+    // turn LED on and do fade animation:
+    digitalWrite(ledPin, HIGH);
+    for(int i = 0; i < 150;i++){   // Set LED from brightness 0 to 150
+      analogWrite(11, i);          // Light LED at brightness i
+      delay(10);                   // Delay for 0.01 second
+   }
+   for(int i = 150; i >= 0;i--){   // Set LED from brightness 150 to 0
+      analogWrite(11, i);          // Light LED at brightness i
+      delay(10);                   // Delay for 0.01 second
+   }
+  } else {
+    // turn LED off:
+    digitalWrite(ledPin, LOW);
+  } 
+
+}
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="A2/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 When users press on the button, the LED fade from brightness 0 to 150, then 150 to 0 in 3 seconds. Otherwise, the LED is turned off. 
+                 <br>
+                 <br>
+            </p>
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
         </div>
         
     </body>
