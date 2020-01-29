@@ -1,0 +1,83 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Example Student's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Assignment 3: Input Output</h1>
+            <h2>Schematic</h2>
+            <img src="A3/Schematic.jpg" width=400></a>
+            <p>
+                The schematic demonstrates how I accomplish making two LEDs light in differenct environment. First, connect LEDs and photoresistor to a separate Pin on Arduino. Second, connect the photoresistor to 5V. Third, add resistors to the circuit to drop the voltage on LEDs and photoresistor to prevent LEDs and the photoresistor from breaking. Finally, Connect the LEDs and photoresistor back to GND on Arduino.
+            </p>
+            <h2>Circuit</h2>
+            <img src="A3/Circuit.jpg" width=400></a>
+            <p>
+                In this assignment, I used blue LED and white LED with 220K resistors and a photoresistor with 10K resistor. The voltage drop of each LED is around 1.6 ohms. The current flows through the LED would be around (5V - 1.6V) / A x 220K ohms which is 0.015mA. This is in the desired current range. For the photoresistor, the reason why I use a 10K resistor is to make sure that the infinity current is not breaking anything. When there are strong light, the resistance of the photoresistor becomes close to zero. Hence, adding a resistor to the circuit would prevent it from breaking. Also, I read 500 to 1023 from the photoresistor.
+            </p>
+            <h2>Firmware</h2>
+            <xmp>
+            
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);  // initialize serial communications at 9600 bps
+  pinMode(2, OUTPUT);  // initialize the LED pin as an output
+  pinMode(3, OUTPUT);  // initialize the LED pin as an output:
+  pinMode(A0, INPUT);  // initialize the Photoresistor pin as an input:
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(2, HIGH);   // Turn blue LED on
+  int inputValue = analogRead(A0); // read the analog in value
+  int outputValue = map(inputValue, 500, 1023, 0, 255); // map it to the range of the analog out
+  
+  if (outputValue > 200) {  // check if there are less light in the physical world
+    analogWrite(2, outputValue); // change the analog out value for blue LED
+    analogWrite(3, 0);   // dim the white LED
+  } else {
+    analogWrite(3, outputValue); // change the analog out value for white
+    analogWrite(2, 0);   // dim the blue LED
+  }
+
+  
+  
+  // print if the analog value is greater or less than 200 to the Serial Monitor:
+  Serial.print("output ");
+  if (outputValue > 200) {  // check if output value is greater than 200
+    Serial.print("> ");    // print greater sign
+  } else {
+    Serial.print("<= ");    // print less/equal sign
+  }
+  Serial.print("200");  // print 200
+  Serial.println("");  // print on next line
+
+  // wait 2 milliseconds before the next loop for the analog-to-digital
+  // converter to settle after the last reading:
+  delay(2);
+
+}
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="A3/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 When users put light on the photoresistor, the white LED lights up with the value of how light the resource is. Otherwise, the blue LED is turned on with the value of the light resource. 
+                 <br>
+                 <br>
+            </p>
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
+        </div>
+        
+    </body>
+</html>
