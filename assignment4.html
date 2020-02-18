@@ -1,0 +1,82 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title> Kaishan Ding's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Assignment 4: High(er) voltage and transistors</h1>
+            <h2>Schematic</h2>
+            <img src="A4/Schematic.jpg" width=650></a>
+            <p>
+                The photoresistor is connected by one leg to 5V of power, and the other leg to an analog INPUT pin, A0, as well as a 10k Ohm resistor and back to GND.<br><br>
+                From the microcontroller, Pin 10 connects to a leg of a 1k Ohm resistor, where the other leg is connected to the gate of the transistor by a wire. The source leg of the transistor connects back to ground. The drain leg of the transistor connects to the negative leg of the LED strip through an alligator clip. The positive leg of the LED strip is connected to power by a wire to the positive screw terminal of a 12V power cord, the negative screw terminal connects to the breadboard to circulate back to ground.
+
+            </p>
+            <h2>Circuit</h2>
+            <img src="A4/Circuit2.jpg" width=400></a>
+            <img src="A4/Circuit1.jpg" width=400></a>
+            <p>
+              Photoresistor Calculation<br>
+              <font size="2">
+                V = I * (R_photoresistor + R)<br>
+                5V = 0.02A * (R_photoresistor_min + R)<br>
+                R = 5V / 0.02A<br>
+                R = 250 ohms < 10000 ohms <br>
+              </font>
+                Thus, it ensures the current is low.
+            </p>
+            <p>
+              To ensure that the gate of the transistor gets enough current, the minimum resistor value should be at least 180 Ohms. For this assignment, I used 1k Ohms to be safe with the higher voltage and ensure low current.<br>
+              Because I'm using 3 LED strip segments, the total current is 15mA(3 * 5mA from class slide). 
+            </p>
+            <h2>Firmware</h2>
+            <xmp>
+const int sensorPin = A0;  // Analog input pin that the photoresistor is attached to
+const int LEDPin = 10; // Analog output pin that the LED is attached to
+
+int sensorValue = 0;        // value read from the pot
+int  brightness = 0;        // value output to the PWM (analog out)
+
+void setup() {
+  pinMode(sensorPin, INPUT); //sets A0 to input
+  pinMode(LEDPin, OUTPUT); //sets pin 10 to output
+}
+
+void loop() {
+  // read the analog in value:
+  // limits values to specified range
+  sensorValue = analogRead(sensorPin);
+  // map it to the range of the analog out:
+  brightness = map(sensorValue, 500, 1023, 0, 255);
+  // change the analog out value:
+  if (brightness > 200) {  // check if there are more light in the physical world
+      analogWrite(LEDPin, 0); // turn LED off
+   } else {
+      analogWrite(LEDPin, brightness); // change the analog out value for LED Strip
+   }
+  delay(1000); //delay
+}
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="A4/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 When users put light on the photoresistor, the LED turned off. When surrounding is dim, the LED strip light up.
+                 <br>
+                 <br>
+            </p>
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
+        </div>
+        
+    </body>
+</html>
