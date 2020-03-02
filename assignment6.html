@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title> Kaishan Ding's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Assignment 6: The web talks back!</h1>
+            <h2>Schematic</h2>
+            <img src="A6/Schematic.jpg" width=400></a>
+            <p>
+              GND and +5V are connected to GND and 5V on the arduino. VR_x and VR_y are connected to A0 and A1 because the computer needs to analogRead() from arduino, which only Pins start with 'A' can be used with analogRead(). SW is connected to Pin 2.<br>
+              Blue and Red LEDs are connected to Pin 5 and 6.
+            </p>
+            <h2>Circuit</h2>
+            <img src="A6/Circuit.jpg" width=400></a>
+            <p>
+              The joystick consists of two potentiometers which controls its movement in both x- and y- axis. 
+            </p>
+            <h2>Firmware</h2>
+            <xmp>
+void setup() {
+ Serial.begin(9600);  // initialize serial communications
+ Serial.setTimeout(10); // set the timeout for parseInt
+ pinMode(5, OUTPUT);  // Connect Pin 5 to LED
+ pinMode(6, OUTPUT);  // Connect Pin 6 to LED
+}
+
+
+void loop() {
+  int s1 = analogRead(0); // read the analog in value
+  int s2 = analogRead(1); // read the analog in value
+  // print s1 and s2 as an array
+  Serial.print("[");
+  Serial.print(s1);
+  Serial.print(",");
+  Serial.print(s2);
+  Serial.println("]");  // print next array in the next line
+  if (Serial.available() > 0) {   // if there's serial data 
+   int inByte = Serial.read(); // read it
+   //Serial.write(20);   // send it back out as raw binary data
+   if (inByte >= 48 && inByte <= 57){
+      analogWrite(5, inByte); // use it to set the LED brightness
+      analogWrite(6, 0); // use it to set the LED brightness
+   } else {
+      analogWrite(6, inByte); // use it to set the LED brightness
+      analogWrite(5, 0); // use it to set the LED brightness
+   }
+  }
+}
+
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="A6/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 The y-axis controls the width of the circle. The x-axis controls the height of the circle. It scales based on my action.<br>
+                 The Blue LED only lights up when I pressed number keys, while the red LED lights up when I pressed other keys.
+            </p>
+            <h2> Webpage's codes
+              <br>
+              <br>
+            <img src="A5/index.jpg" width=500></a>
+            <br>
+            <img src="A6/sketch1.jpg" width=500></a>
+            <br>
+            <img src="A6/sketch2.jpg" width=500></a>
+            <br>
+            <img src="A6/sketch3.jpg" width=500></a>
+            <br>
+            <p>
+            I am getting numbers from 0 to 1023 because that is the range of potentresisters that are able to return. I map them to the height of the screen, so the circle won't go off or over the web screen.
+            </p>
+
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
+        </div>
+        
+    </body>
+</html>
