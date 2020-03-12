@@ -1,0 +1,125 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title> Kaishan Ding's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Final Project: Remote Control Table Lamp</h1>
+            <h2>Schematic</h2>
+            <img src="FinalProject/Schematic1.jpg" width=400></a>
+            <img src="FinalProject/Schematic2.jpg" width=400></a>
+            <p>
+              GND and +5V are connected to GND and 5V on the arduino. VR_x and VR_y are connected to A0 and A1 because the computer needs to analogRead() from arduino, which only Pins start with 'A' can be used with analogRead(). SW is connected to Pin 2.<br>
+              Blue and Red LEDs are connected to Pin 5 and 6.
+            </p>
+            <h2>Circuit</h2>
+            <img src="FinalProject/Circuit.jpg" width=400></a>
+            <p>
+              The joystick consists of two potentiometers which controls its movement in both x- and y- axis. 
+            </p>
+            <h2>Firmware</h2>
+            <xmp>
+#include "IRremote.h"
+
+/*-----( Global Constants )-----*/
+const int receiver = 11;      // Signal Pin of IR receiver to Arduino Digital Pin 11
+const int LEDPin = 6;     //sets pin 5 to output
+
+int power = 0; // check if power is on
+/*-----( Declare objects )-----*/
+IRrecv irrecv(receiver);     // create instance of 'irrecv'
+decode_results results;      // create instance of 'decode_results'
+
+/*-----( Function )-----*/
+void translateIR() {          // takes action based on IR code received
+// describing Remote IR codes 
+  switch(results.value){
+    case 0xFFA25D: Serial.println("POWER"); 
+    if (power == 0) {               // Check LED if it's on
+      analogWrite(LEDPin, 125);     // turn on LED
+      power = 1;            
+    } else {
+      analogWrite(LEDPin, 0);       // turn off LED
+      power = 0;
+    }
+    break;
+    case 0xFF30CF: Serial.println("1");    
+    if (power == 1) { analogWrite(LEDPin, 25); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF18E7: Serial.println("2");    
+    if (power == 1) { analogWrite(LEDPin, 50); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF7A85: Serial.println("3");    
+    if (power == 1) { analogWrite(LEDPin, 75); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF10EF: Serial.println("4");    
+    if (power == 1) { analogWrite(LEDPin, 100); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF38C7: Serial.println("5");    
+    if (power == 1) { analogWrite(LEDPin, 125); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF5AA5: Serial.println("6");    
+    if (power == 1) { analogWrite(LEDPin, 150); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF42BD: Serial.println("7");    
+    if (power == 1) { analogWrite(LEDPin, 175); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF4AB5: Serial.println("8");    
+    if (power == 1) { analogWrite(LEDPin, 200); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF52AD: Serial.println("9");    
+    if (power == 1) { analogWrite(LEDPin, 225); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFFFFFFFF: Serial.println(" REPEAT");break;  
+
+  default: 
+    Serial.print(" other button   ");
+    Serial.println(results.value);
+
+  }// End Case
+
+} //END translateIR
+
+void setup(){  
+  Serial.begin(9600);   // initialize serial communications
+  Serial.println("IR Receiver Button Decode"); 
+  irrecv.enableIRIn();           // Start the receiver
+  pinMode(LEDPin, OUTPUT); //sets pin 5 to output
+}
+
+void loop(){   
+  if (irrecv.decode(&results))   // have we received an IR signal?
+  {
+    translateIR(); 
+    delay(500);                 // Do not get immediate repeat
+    irrecv.resume();            // receive the next value
+  }  
+}
+            <p>
+            I am getting numbers from 0 to 1023 because that is the range of potentresisters that are able to return. I map them to the height of the screen, so the circle won't go off or over the web screen.
+            </p>
+
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="FinalProject/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 The y-axis controls the width of the circle. The x-axis controls the height of the circle. It scales based on my action.<br>
+                 The Blue LED only lights up when I pressed number keys, while the red LED lights up when I pressed other keys.
+            </p>
+
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
+        </div>
+        
+    </body>
+</html>

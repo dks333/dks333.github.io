@@ -1,0 +1,126 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title> Kaishan Ding's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Final Project: Remote Control Table Lamp</h1>
+            <img src="FinalProject/Overview.jpg" width=400></a>
+            <p>
+              When I am in bed, I always hate to get up to turn off the light. With this product, I can use the controller to turn on/off the light remotely. Also, I am able to control the brightness of the table lamp.
+            </p>
+            <h2>Schematic</h2>
+            <img src="FinalProject/Schematic1.jpg" height=300></a>
+            <img src="FinalProject/Schematic2.jpg" height=300></a>
+            <p>
+              1) From the microcontroller, Pin 6 connects to a leg of a 1k Ohm resistor, where the other leg is connected to the gate of the transistor by a wire. The source leg of the transistor connects back to ground. The drain leg of the transistor connects to the negative leg of the LED strip through an alligator clip. The positive leg of the LED strip is connected to power by a wire to the positive screw terminal of a 12V power cord, the negative screw terminal connects to the breadboard to circulate back to ground. 
+              <br>
+              2) Connect IRRemote to Ground, 5V and Pin 11 to pass the signal. 
+            </p>
+            <h2>Circuit</h2>
+            <img src="FinalProject/Circuit.jpg" width=400></a>
+            <p>
+              The maximum current that can pass from the drain to source on this N-MOSFET is 32A. In this case, there are only three segments of LED strips are connected in parallel, so the total current is 15mA(< 32A).
+            </p>
+            <h2>Firmware</h2>
+            <xmp>
+#include "IRremote.h"
+
+/*-----( Global Constants )-----*/
+const int receiver = 11;      // Signal Pin of IR receiver to Arduino Digital Pin 11
+const int LEDPin = 6;     //sets pin 5 to output
+
+int power = 0; // check if power is on
+/*-----( Declare objects )-----*/
+IRrecv irrecv(receiver);     // create instance of 'irrecv'
+decode_results results;      // create instance of 'decode_results'
+
+/*-----( Function )-----*/
+void translateIR() {          // takes action based on IR code received
+// describing Remote IR codes 
+  switch(results.value){
+    case 0xFFA25D: Serial.println("POWER"); 
+    if (power == 0) {               // Check LED if it's on
+      analogWrite(LEDPin, 125);     // turn on LED
+      power = 1;            
+    } else {
+      analogWrite(LEDPin, 0);       // turn off LED
+      power = 0;
+    }
+    break;
+    case 0xFF30CF: Serial.println("1");    
+    if (power == 1) { analogWrite(LEDPin, 25); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF18E7: Serial.println("2");    
+    if (power == 1) { analogWrite(LEDPin, 50); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF7A85: Serial.println("3");    
+    if (power == 1) { analogWrite(LEDPin, 75); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF10EF: Serial.println("4");    
+    if (power == 1) { analogWrite(LEDPin, 100); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF38C7: Serial.println("5");    
+    if (power == 1) { analogWrite(LEDPin, 125); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF5AA5: Serial.println("6");    
+    if (power == 1) { analogWrite(LEDPin, 150); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF42BD: Serial.println("7");    
+    if (power == 1) { analogWrite(LEDPin, 175); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF4AB5: Serial.println("8");    
+    if (power == 1) { analogWrite(LEDPin, 200); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFF52AD: Serial.println("9");    
+    if (power == 1) { analogWrite(LEDPin, 225); } // If LED is on, change the analog out value for LED Strip
+    break;
+    case 0xFFFFFFFF: Serial.println(" REPEAT");break;  
+
+  default: 
+    Serial.print(" other button   ");
+    Serial.println(results.value);
+
+  }// End Case
+
+} //END translateIR
+
+void setup(){  
+  Serial.begin(9600);   // initialize serial communications
+  Serial.println("IR Receiver Button Decode"); 
+  irrecv.enableIRIn();           // Start the receiver
+  pinMode(LEDPin, OUTPUT); //sets pin 5 to output
+}
+
+void loop(){   
+  if (irrecv.decode(&results))   // have we received an IR signal?
+  {
+    translateIR(); 
+    delay(500);                 // Do not get immediate repeat
+    irrecv.resume();            // receive the next value
+  }  
+}
+
+            </xmp>
+            <h2>Circuit's operation</h2>
+            <img src="FinalProject/video.gif" width=400></a>
+            <p style="padding: 0 10em 5em 0">
+                 The red button is used to turn on/off the lamp. The number pad is used to control the brightness of the lamp, as 1 being the lowest and 9 being the highest. Also, users need to turn on the light first before they change the brightness of the lamp.
+            </p>
+
+            <div class="assignment">
+              <a href="index.html"><h2>BACK</h2>
+                  
+
+        </div>
+        
+    </body>
+</html>
