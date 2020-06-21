@@ -62,36 +62,27 @@
     <section class="templateux-portfolio-overlap mb-5" data-aos="fade-up" id="next">
       <div class="container">
         <!-- <div class="row"> -->
-          <form action="contact-form-handler.php" method="POST" name="contactform">
+          <form action="https://formspree.io/xqkylynz" method="POST" name="contactform">
             <div class="row">
               <div class="col-md-4  mb-4">
-                <input type="text" class="form-control" placeholder="Name" name="name">
+                <input type="text" class="form-control" placeholder="Name" name="name" >
               </div>
               <div class="col-md-4  mb-4">
-                <input type="email" class="form-control" placeholder="Email" name="email">
+                <input type="email" class="form-control" placeholder="Email" name="_replyto" >
               </div>
             </div>
             <div class="row">
               <div class="col-md-12  mb-4">
-                <textarea name="message" class="form-control" id="" cols="30" rows="10" placeholder="Message"></textarea>
+                <textarea name="message" class="form-control" cols="30" rows="10" placeholder="Message" id="message"></textarea>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-4  mb-4">
-                <input type="submit" class="button button--red" value="Submit"  id="submit_form">
+                <input type="submit" class="button button--red" value="Send"  id="submit">
               </div>
             </div>
           </form>
-          <script language="JavaScript">
-          // Code for validating the form
-          // Visit http://www.javascript-coder.com/html-form/javascript-form-validation.phtml
-          // for details
-          var frmvalidator  = new Validator("contactform");
-          frmvalidator.addValidation("name","req","Please provide your name"); 
-          frmvalidator.addValidation("email","req","Please provide your email"); 
-          frmvalidator.addValidation("email","email","Please enter a valid email address"); 
-          </script>
         <!-- </div> -->
       </div>
     </section>
